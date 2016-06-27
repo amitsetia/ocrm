@@ -1,0 +1,33 @@
+---
+
+   - hosts: stg
+     tasks:
+       - name: Install Epel Repo
+         yum: name=https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm state=present
+       - name: Copy Mongo repo
+         copy: src=/home/amit/ansible/ocrm/mongo.repo  dest=/etc/yum.repos.d/mongodb-org-3.2.repo mode=0644 owner=root group=root
+       - name: Install packages
+         yum: name={{ item }}  state=present
+         with_items:
+           - redis-2.8.19-2.el7.x86_64
+           - rabbitmq-server-3.3.5-17.el7.noarch
+           - wget
+           - curl
+           - ntp
+           - httpd
+           - telnet
+           - rsyslog
+           - mariadb-5.5.44-2.el7.centos.x86_64
+           - mariadb-server-5.5.44-2.el7.centos.x86_64
+           - mongodb-org-3.2.4-1.el7.x86_64
+           - mongodb-org-tools-3.2.4-1.el7.x86_64
+           - mongodb-org-shell-3.2.4-1.el7.x86_64
+           - mongodb-org-server-3.2.4-1.el7.x86_64
+           - mongodb-org-mongos-3.2.4-1.el7.x86_64
+
+       - name: Install NVM
+         shell: curl https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
+       - name: Install Node v4.4.1
+         command:  bash -c '. ~/.nvm/nvm.sh; nvm install v4.4.1'
+       - name: Set Node as Default
+         command: bash -c '. ~/.nvm/nvm.sh; nvm alias default 4'
