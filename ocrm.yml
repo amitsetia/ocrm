@@ -1,13 +1,11 @@
 ---
 
    - hosts: stgi
-     vars: 
-         dir_path : '{{ directory }}'
      tasks:
        - name: Install Epel Repo
          yum: name=https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm state=present
        - name: Copy Mongo repo
-         copy: src={{ dir_path }}/mongo.repo  dest=/etc/yum.repos.d/mongodb-org-3.2.repo mode=0644 owner=root group=root
+         copy: src=mongo.repo  dest=/etc/yum.repos.d/mongodb-org-3.2.repo mode=0644 owner=root group=root
        - name: Install packages
          yum: name={{ item }}  state=present
          with_items:
